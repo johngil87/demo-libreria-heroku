@@ -4,10 +4,10 @@ package com.example.demolibreriaheroku.controller;
 import com.example.demolibreriaheroku.DTO.BookDTO;
 import com.example.demolibreriaheroku.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +19,20 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/list")
-    public List<BookDTO> listBook(){
-        return bookService.listBook();
+    public ResponseEntity<List<BookDTO>> listBook(){
+        return new ResponseEntity<>(bookService.listBook(),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/listcategory/{id}")
-    public List<BookDTO> listByCategory(@PathVariable("id") String id){
-        return bookService.listBookCategory(id);
+    public ResponseEntity<List<BookDTO>> listByCategory(@PathVariable("id") String id){
+        if(id == null){
+            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(bookService.listBookCategory(id), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<BookDTO> createBook (@RequestBody BookDTO bookDTO){
+        return new ResponseEntity<>(bookService.saveBook(bookDTO), HttpStatus.ACCEPTED);
     }
 }

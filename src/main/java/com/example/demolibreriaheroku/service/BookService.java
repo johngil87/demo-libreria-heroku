@@ -14,7 +14,7 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    private BookMapper bookMapper;
+    private BookMapper bookMapper = new BookMapper();
 
     public List<BookDTO> listBook(){
         return bookMapper.bookToListDTO(bookRepository.findAll());
@@ -22,5 +22,10 @@ public class BookService {
 
     public List<BookDTO> listBookCategory(String categoria){
         return bookMapper.bookToListDTO(bookRepository.findBookByCategoria(categoria));
+    }
+
+    public BookDTO saveBook(BookDTO bookDTO){
+        var book = bookMapper.DTOtoBook(bookDTO);
+        return bookMapper.bookToDTO(bookRepository.save(book));
     }
 }
