@@ -21,7 +21,7 @@ public class BookController {
 
     @GetMapping("/list")
     public ResponseEntity<List<BookDTO>> listBook(){
-        return new ResponseEntity<>(bookService.listBook(),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(bookService.listBook(),HttpStatus.OK);
     }
 
     @GetMapping("/listcategory/{id}")
@@ -29,11 +29,11 @@ public class BookController {
         if(id == null){
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(bookService.listBookCategory(id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(bookService.listBookCategory(id), HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<BookDTO> createBook (@RequestBody BookDTO bookDTO){
-        return new ResponseEntity<>(bookService.saveBook(bookDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(bookService.saveBook(bookDTO), HttpStatus.CREATED);
     }
 }
